@@ -1,0 +1,78 @@
+CREATE DATABASE CRM;
+USE CRM;
+
+CREATE TABLE users (
+	id int auto_increment,
+	email varchar(100),
+	passwords varchar(50),
+	firstname varchar(100),
+	lastname varchar(100),
+	username varchar(100),
+	fullname varchar(255),
+	phone varchar(50),
+	image varchar(255),
+	
+	primary key(id),
+	id_role int
+);
+
+CREATE TABLE roles(
+	id int auto_increment,
+	name varchar (50),
+	description text,
+
+	primary key (id)
+);
+
+CREATE TABLE job(
+	id int auto_increment,
+	name varchar(100),
+	content text,
+	startdate date,
+	enddate date,
+	
+	primary key(id),
+	id_project int
+); 
+
+CREATE TABLE users_project(
+	id_users int,
+	id_project int,
+	createdate date,
+	
+	primary key(id_users,id_project)
+);
+
+CREATE TABLE job_status_users(
+	id_users int,
+	id_status int,
+	id_job int,
+	createdate date,
+	
+	primary key(id_users, id_status, id_job)
+);
+
+CREATE TABLE status(
+	id int auto_increment,
+	name varchar(50),
+
+	primary key (id)
+);
+
+CREATE TABLE project(
+	id int auto_increment,
+	name varchar(50),
+	startdate date,
+	enddate date,
+	
+	primary key(id)
+);
+
+ALTER TABLE users ADD CONSTRAINT FK_id_role_users FOREIGN KEY (id_role) REFERENCES roles(id);
+ALTER TABLE job ADD CONSTRAINT FK_id_project_job FOREIGN KEY (id_project) REFERENCES project(id);
+ALTER TABLE users_project ADD CONSTRAINT FK_id_project_users_project FOREIGN KEY (id_project) REFERENCES project(id);
+ALTER TABLE users_project ADD CONSTRAINT FK_id_users_users_project FOREIGN KEY (id_users) REFERENCES users(id);
+ALTER TABLE job_status_users ADD CONSTRAINT FK_id_status_job_status_users FOREIGN KEY (id_status) REFERENCES status(id);
+ALTER TABLE job_status_users ADD CONSTRAINT FK_id_job_job_status_users FOREIGN KEY (id_job) REFERENCES job(id);
+ALTER TABLE job_status_users ADD CONSTRAINT FK_id_users_job_status_users FOREIGN KEY (id_users) REFERENCES users(id);
+
